@@ -1,0 +1,52 @@
+## Basic configuration
+set previewer ctpv
+set cleaner ctpvclear
+&ctpv -s $id
+&ctpvquit $idset hidden true
+set ignorecase true
+
+## Delete script
+cmd delete ${{
+    ~/scripts/delete.sh "$fx"
+    #set -f
+    # printf "$fx"
+    #file="${fx//$'\n'/\" \"}"
+    #printf "\n\"$file\""
+    #printf "\n\nDelete? [y/N]\n"
+    #read -n1 ans
+    #[ "$ans" = "y" ] && rm -v -rf "\"$file\""
+}}
+
+cmd changeDir ${{
+	cd $f
+}}
+
+## FZF
+cmd fzf ${{
+
+	# find . -type d -print | fzf | $fx
+	# if [$fx -ne ""]; then
+	# cd $fx && exec lf
+	# fi
+	
+	selected_directory=$(find . -type d -print | fzf)
+	if [ -n "$selected_directory" ]; then
+    	cd "$selected_directory" && exec lf
+	fi
+
+}}
+
+
+## Mappings
+map E $sudo vim "$f"
+map f 
+map f fzf
+map D delete
+map s push :shell<enter>mkdir<space>
+map S push :shell<enter>
+map <s-up> half-up
+map <s-down> half-down
+map . set hidden!
+map gi cd ~/.config/nvim
+map gc cd /mnt/c/Users/Gleb
+map e $vim "$f"
